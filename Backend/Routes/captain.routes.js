@@ -17,11 +17,10 @@ router.post('/register', [
 
 )
 
-router.post('/login',[
+router.post('/login', [
     body('email').isEmail().withMessage("Invalid Email"),
-    body('password').isLength({min:6}).withMessage('Password must be at least 8 characters long'),
-],
-captainController.loginCaptain)
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+], captainController.loginCaptain);
 
 router.get('/profile', authMiddleware.authCaptain, captainController.getCaptainProfile)
 

@@ -46,7 +46,7 @@ module.exports.authCaptain = async (req, res, next) => {
     if (!token) {
         return res.status(401).json({ error: 'Unauthorized: No token provided' });
     }
-    const isblacklisted = await blackListTokenModel.findOne({token: token});
+    const isblacklisted = await blackListTokenModel.findOne({ token: token });
 
     if (isblacklisted) {
         return res.status(401).json({ error: 'Unauthorized: Token is blacklisted' });
@@ -55,11 +55,10 @@ module.exports.authCaptain = async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const captain = await captainModel.findById(decoded._id);
-    
 
         req.captain = captain;
         return next();
     } catch (err) {
         return res.status(401).json({ error: 'Invalid or expired token' });
     }
-}
+};
