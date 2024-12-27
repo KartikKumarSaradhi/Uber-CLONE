@@ -2,6 +2,7 @@ const captainModel = require('../models/captain.model');
 const captainService = require('../services/captain.service');
 const blackListTokenModel = require('../models/blackListToken.model');
 const { validationResult } = require('express-validator');
+// const bcrypt = require('bcrypt');
 
 
 module.exports.registerCaptain = async (req, res, next) => {
@@ -20,7 +21,7 @@ module.exports.registerCaptain = async (req, res, next) => {
     }
 
 
-    const hashedPassword = await captainModel.hashPassword(password);
+    const hashedPassword = password;
 
     const captain = await captainService.createCaptain({
         firstname: fullname.firstname,
@@ -54,10 +55,10 @@ module.exports.loginCaptain = async (req, res, next) => {
           return res.status(401).json({ message: 'Invalid email or password' });
       }
 
-      const isMatch = await captain.comparePassword(password,);
+      const isMatch = await captain.comparePassword(password);
 
       if (!isMatch) {
-          return res.status(401).json({ message: 'Invalid email or password' });
+          return res.status(401).json({ message: 'Invalid password' });
       }
 
       const token = captain.generateAuthToken();

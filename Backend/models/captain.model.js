@@ -49,7 +49,7 @@ const captainSchema = new mongoose.Schema({
             required: true,
             min: [1, 'Vehicle capacity must be at least 1'],
         },
-        vehicletype: {
+        vehicleType: {
             type: 'string',
             required: true,
             enum: ['car', 'motorcycle', 'auto'],
@@ -65,13 +65,7 @@ const captainSchema = new mongoose.Schema({
     },
 });
 
-// Pre-save hook to hash the password before saving
-captainSchema.pre('save', async function(next) {
-    if (this.isModified('password') || this.isNew) {
-        this.password = await captainSchema.statics.hashPassword(this.password);
-    }
-    next();
-});
+
 
 // Method to generate auth token
 captainSchema.methods.generateAuthToken = function() {
