@@ -13,10 +13,20 @@ connectToDb();
 
 
 app.use(cors({
-    origin: 'http://localhost:3000', // Frontend URL
-    credentials: true,
-    allowedHeaders: ['Authorization', 'Content-Type'],
+    origin: (origin, callback) => {
+        const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173']; // Add all allowed origins here
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true); // Allow the request
+        } else {
+            callback(new Error('Not allowed by CORS')); // Block the request
+        }
+    },
+    credentials: true, // Allow credentials (cookies, authorization headers)
+    allowedHeaders: ['Authorization', 'Content-Type'], // Allow specific headers
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
 }));
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
